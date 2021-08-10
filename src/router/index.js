@@ -1,29 +1,75 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-
-Vue.use(VueRouter)
+Vue.use(VueRouter) // 注册模块, 已经全局组件 router-view
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: '/film',
+    component: () => import('../views/Film.vue'),
+    // 嵌套路由
+    children: [
+      {
+        path: 'nowplaying', // 简写
+        component: () => import('../views/film/Nowplaying.vue')
+      },
+      {
+        path: '/film/comingsoon',
+        component: () => import('../views/film/Comingsoon.vue')
+      },
+      {
+        path: '',
+        redirect: '/film/nowplaying'
+      }
+    ]
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/cinema',
+    component: () => import('../views/Cinema.vue')
+  },
+  {
+    path: '/center',
+    component: () => import('../views/Center.vue')
+  },
+  {
+    path: '/login',
+    component: () => import('../views/Login.vue')
+  },
+  {
+    path: '/detail/:myid', // 动态路由
+    component: () => import('../views/Detail.vue'),
+    name: 'kerwinDetail'
+  },
+
+  // {
+  //   path: '/detail',
+  //   component: Detail
+  // },
+
+  {
+    path: '*', // 通配符
+    redirect: '/film'
   }
 ]
 
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
+  mode: 'hash', // hash ,history
   routes
+})
+// 全局路由守卫
+router.beforeEach((to, from, next) => {
+  // ...
+  const auth = ['/center', '/order', '/money', '/card']
+
+  if (auth.includes(to.fullPath)) {
+    // console.log('验证token')
+    if (!localStorage.getItem('token')) {
+      next('/login')
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
 })
 
 export default router
