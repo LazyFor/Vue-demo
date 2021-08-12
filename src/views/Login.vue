@@ -1,6 +1,15 @@
 <template>
     <div>
         Login
-        <button>登录</button>
+        <van-button type="info" block>主要按钮</van-button>
     </div>
 </template>
+
+<script>
+import Vue from 'vue'
+import { Button } from 'vant'
+Vue.use(Button)
+export default {
+
+}
+</script>

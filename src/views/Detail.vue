@@ -29,7 +29,7 @@
 
         <h3>剧照</h3>
         <detail-swiper :perslide="2" swiperclass="swiper-photos">
-            <div class="swiper-slide" v-for="(data,index) in filminfo.photos" :key="index">
+            <div class="swiper-slide" v-for="(data,index) in filminfo.photos" :key="index" @click="handlePreview(index)">
               <div :style="{backgroundImage:'url('+data+')'}" style="height:100px;background-size:cover;background-position:center"></div>
             </div>
         </detail-swiper>
@@ -42,6 +42,7 @@ import Vue from 'vue'
 import moment from 'moment'
 import detailSwiper from './detail/DetailSwiper.vue'
 import detailHeader from './detail/DetailHeader.vue'
+import { ImagePreview } from 'vant'
 
 Vue.filter('dataFilter', (date) => {
   // 日期处理函数 - moment
@@ -53,7 +54,7 @@ Vue.directive('top', {
     el.style.display = 'none'
     window.onscroll = () => {
       // console.log(document.documentElement.scrollTop)
-      if ((document.body.scrollTop || document.documentElement.scrollTop) > 50) {
+      if ((document.body.scrollTop || document.documentElement.scrollTop) > 10) {
         el.style.display = 'block'
       } else {
         el.style.display = 'none'
@@ -70,6 +71,17 @@ export default {
     return {
       filminfo: null,
       isShow: false
+    }
+  },
+  methods: {
+    handlePreview (index) {
+      ImagePreview({
+        images: this.filminfo.photos,
+        startPosition: index,
+        loop: false,
+        closeable: true,
+        closeIconPosition: 'top-left'
+      })
     }
   },
   mounted () {

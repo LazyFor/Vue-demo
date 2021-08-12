@@ -35,6 +35,10 @@ const routes = [
     component: () => import('../views/Login.vue')
   },
   {
+    path: '/city',
+    component: () => import('../views/City.vue')
+  },
+  {
     path: '/detail/:myid', // 动态路由
     component: () => import('../views/Detail.vue'),
     name: 'kerwinDetail'
