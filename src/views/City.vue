@@ -2,7 +2,7 @@
     <van-index-bar :index-list="computedCityList" highlight-color="pink" @select="handleSelect">
         <div v-for="data in cityList" :key="data.type">
             <van-index-anchor :index="data.type" />
-            <van-cell :title="item.name"  v-for="(item,index) in data.list" :key="index" @click="handleChangePage(item.name)" />
+            <van-cell :title="item.name"  v-for="(item,index) in data.list" :key="index" @click="handleChangePage(item.name,item.cityId)" />
         </div>
     </van-index-bar>
 </template>
@@ -11,6 +11,7 @@
 import Vue from 'vue'
 import { IndexBar, IndexAnchor, Cell, Toast } from 'vant'
 import http from '@/util/http'
+import { mapMutations } from 'vuex'
 
 Vue.use(IndexBar).use(Cell)
 Vue.use(IndexAnchor)
@@ -38,6 +39,7 @@ export default {
     })
   },
   methods: {
+    ...mapMutations('CityModule', ['changeCityName', 'changeCityId']),
     handleCityData (cities) {
       // 输入原始数据，输出目标数据
       // console.log(cities)
@@ -64,8 +66,12 @@ export default {
       // console.log(index)
       Toast(index)
     },
-    handleChangePage (name) {
-      this.$store.state.cityName = name
+    handleChangePage (name, cityId) {
+      // this.$store.state.cityName = name // 随意修改导致状态不可控
+
+      this.changeCityName(name)
+      this.changeCityId(cityId)
+
       this.$router.back()
     }
   }

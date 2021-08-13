@@ -43,6 +43,7 @@ import moment from 'moment'
 import detailSwiper from './detail/DetailSwiper.vue'
 import detailHeader from './detail/DetailHeader.vue'
 import { ImagePreview } from 'vant'
+import { mapMutations } from 'vuex'
 
 Vue.filter('dataFilter', (date) => {
   // 日期处理函数 - moment
@@ -74,6 +75,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('TabbarModule', ['show', 'hide']),
     handlePreview (index) {
       ImagePreview({
         images: this.filminfo.photos,
@@ -85,6 +87,10 @@ export default {
     }
   },
   mounted () {
+    // 隐藏底部导航栏
+    // this.$store.commit("hide")
+    this.hide()
+
     // this.$route 当前匹配的路由对象
     // console.log('利用获取的id，Ajax请求后端接口', this.$route.params.myid)
 
@@ -98,6 +104,11 @@ export default {
       // console.log(res.data.data.film)
       this.filminfo = res.data.data.film
     })
+  },
+  beforeDestroy () {
+    // 显示底部导航栏
+    // this.$store.commit("show")
+    this.show()
   },
   components: {
     detailSwiper, detailHeader
