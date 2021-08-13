@@ -54,6 +54,7 @@ export default {
   *{
     margin: 0;
     padding: 0;
+    touch-action: manipulation;/* 300ms问题解决 */
   }
   html,body{
     /* height: 100%; */
@@ -62,4 +63,5 @@ export default {
   section{
     margin-bottom: 50px;
   }
+
 </style>

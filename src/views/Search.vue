@@ -35,7 +35,7 @@ export default {
       // vue 异步流程
       this.getCinemaList(this.cityId)
     } else {
-      console.log('缓存')
+    //   console.log('缓存')
     }
   },
   computed: {

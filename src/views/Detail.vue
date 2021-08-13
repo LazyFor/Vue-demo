@@ -1,4 +1,5 @@
 <template>
+  <v-touch @swipeleft="onSwipeLeft">
     <div v-if="filminfo">
       <detail-header v-top :title="filminfo.name"></detail-header>
         <div :style="{backgroundImage:'url('+filminfo.poster+')'}" style="height:230px;background-size:cover;background-position:center"></div>
@@ -34,6 +35,7 @@
             </div>
         </detail-swiper>
     </div>
+  </v-touch>
 </template>
 
 <script>
@@ -44,6 +46,9 @@ import detailSwiper from './detail/DetailSwiper.vue'
 import detailHeader from './detail/DetailHeader.vue'
 import { ImagePreview } from 'vant'
 import { mapMutations } from 'vuex'
+import VueTouch from 'vue-touch' // 手势库
+
+Vue.use(VueTouch, { name: 'v-touch' })
 
 Vue.filter('dataFilter', (date) => {
   // 日期处理函数 - moment
@@ -84,6 +89,10 @@ export default {
         closeable: true,
         closeIconPosition: 'top-left'
       })
+    },
+    onSwipeLeft () {
+      // console.log("left")
+      this.$router.back()
     }
   },
   mounted () {
